@@ -1,14 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luxa4Slack", "Luxa4Slack\Luxa4Slack.csproj", "{0E48DD4A-74D2-4C38-9B55-FCF0C17CAFD1}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Luxa4Slack", "Luxa4Slack\Luxa4Slack.xproj", "{D186A065-9558-4931-951D-2A65D8A343AB}"
 	ProjectSection(ProjectDependencies) = postProject
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D} = {0C0A58A8-174E-4A4C-907B-C3569144D15D}
+		{80450DB7-6A58-491E-8568-D5B7E0051169} = {80450DB7-6A58-491E-8568-D5B7E0051169}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luxa4Slack.Console", "Luxa4Slack.Console\Luxa4Slack.Console.csproj", "{AEB64042-7E5E-4D8A-82B4-C583569517DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7A15E77-F1BC-45F4-9391-ECDC2AA7D892}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,9 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luxa4Slack.Tray", "Luxa4Slack.Tray\Luxa4Slack.Tray.csproj", "{964EBFBE-A600-49B2-BDD8-422B46F1D544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackAPI", "SlackAPI\SlackAPI.csproj", "{0C0A58A8-174E-4A4C-907B-C3569144D15D}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Luxa4Slack.OAuthServer", "Luxa4Slack.OAuthServer\Luxa4Slack.OAuthServer.xproj", "{D775A585-E533-4B2B-A5F0-8662A822A135}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SlackAPI", "SlackAPI\SlackAPI\SlackAPI.xproj", "{80450DB7-6A58-491E-8568-D5B7E0051169}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Luxa4Slack.Console", "Luxa4Slack.Console\Luxa4Slack.Console.xproj", "{6DFEE5D7-3507-49E4-9BAE-BB6F1E9C06CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{48E6681C-3600-4762-B312-FE267C7F92BB} = {48E6681C-3600-4762-B312-FE267C7F92BB}
+		{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28} = {5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Luxa4Slack.Client.Luxafor", "Luxa4Slack.Client.Luxafor\Luxa4Slack.Client.Luxafor.xproj", "{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Luxa4Slack.Client.CommandLine", "Luxa4Slack.Client.CommandLine\Luxa4Slack.Client.CommandLine.xproj", "{48E6681C-3600-4762-B312-FE267C7F92BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,26 +35,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0E48DD4A-74D2-4C38-9B55-FCF0C17CAFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E48DD4A-74D2-4C38-9B55-FCF0C17CAFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E48DD4A-74D2-4C38-9B55-FCF0C17CAFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E48DD4A-74D2-4C38-9B55-FCF0C17CAFD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEB64042-7E5E-4D8A-82B4-C583569517DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEB64042-7E5E-4D8A-82B4-C583569517DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEB64042-7E5E-4D8A-82B4-C583569517DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEB64042-7E5E-4D8A-82B4-C583569517DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D186A065-9558-4931-951D-2A65D8A343AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D186A065-9558-4931-951D-2A65D8A343AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D186A065-9558-4931-951D-2A65D8A343AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D186A065-9558-4931-951D-2A65D8A343AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{964EBFBE-A600-49B2-BDD8-422B46F1D544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{964EBFBE-A600-49B2-BDD8-422B46F1D544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{964EBFBE-A600-49B2-BDD8-422B46F1D544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{964EBFBE-A600-49B2-BDD8-422B46F1D544}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D775A585-E533-4B2B-A5F0-8662A822A135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D775A585-E533-4B2B-A5F0-8662A822A135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D775A585-E533-4B2B-A5F0-8662A822A135}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D775A585-E533-4B2B-A5F0-8662A822A135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80450DB7-6A58-491E-8568-D5B7E0051169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80450DB7-6A58-491E-8568-D5B7E0051169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80450DB7-6A58-491E-8568-D5B7E0051169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80450DB7-6A58-491E-8568-D5B7E0051169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DFEE5D7-3507-49E4-9BAE-BB6F1E9C06CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DFEE5D7-3507-49E4-9BAE-BB6F1E9C06CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DFEE5D7-3507-49E4-9BAE-BB6F1E9C06CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DFEE5D7-3507-49E4-9BAE-BB6F1E9C06CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D02E7FE-8FFE-44AE-96B0-3B31218F2A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48E6681C-3600-4762-B312-FE267C7F92BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48E6681C-3600-4762-B312-FE267C7F92BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48E6681C-3600-4762-B312-FE267C7F92BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48E6681C-3600-4762-B312-FE267C7F92BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,7 +21,13 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "compile": {
+      "include": [
+        "**/*.cs",
+        "../OAuthInfo.cs"
+      ]
+    }
   },
 
   "runtimeOptions": {

@@ -1,7 +1,6 @@
 ﻿namespace CG.Luxa4Slack
 {
   using System;
-  using System.Diagnostics;
   using System.Reflection;
 
   using Castle.DynamicProxy;
@@ -27,27 +26,18 @@
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-      if (reader.TokenType != JsonToken.Null)
+      if (reader.TokenType == JsonToken.Null)
       {
-        string rawData = serializer.Context.Context as string;
-
-        // Extract part of the raw data if needed
-        if (string.IsNullOrEmpty(reader.Path) == false)
-        {
-          JObject context = JObject.Parse(rawData);
-          JToken token = context.SelectToken(reader.Path);
-          rawData = token.ToString();
-        }
-
-        object instance = this.proxyGenerator.CreateClassProxy(objectType, new[] { typeof(IRawMessage) }, new RawMessageInterceptor(rawData));
-
-        JObject jsonObject = JObject.Load(reader);
-        serializer.Populate(jsonObject.CreateReader(), instance);
-
-        return instance;
+        return null;
       }
 
-      return null;
+      JObject jsonObject = JObject.Load(reader);
+      string rawData = jsonObject.ToString();
+
+      object instance = this.proxyGenerator.CreateClassProxy(objectType, new[] { typeof(IRawMessage) }, new RawMessageInterceptor(rawData));
+      serializer.Populate(jsonObject.CreateReader(), instance);
+
+      return instance;
     }
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

@@ -4,6 +4,8 @@
   using System.Threading;
   using System.Threading.Tasks;
 
+  using CG.Luxa4Slack.Client;
+
   public class Luxa4Slack
   {
     private const int DelayBeforeUpdate = 2000;
@@ -11,14 +13,14 @@
     private readonly string slackToken;
     private readonly bool showUnreadMentions;
     private readonly bool showUnreadMessages;
+    private readonly ILuxaforClient luxaforClient;
 
-    private LuxaforClient luxaforClient;
     private SlackNotificationAgent slackAgent;
     private CancellationTokenSource cancellationTokenSource;
     private Task updateTask;
     private int previousWeight;
 
-    public Luxa4Slack(string slackToken, bool showUnreadMentions, bool showUnreadMessages)
+    public Luxa4Slack(string slackToken, bool showUnreadMentions, bool showUnreadMessages, ILuxaforClient luxaforClient)
     {
       if (slackToken == null)
       {
@@ -28,13 +30,14 @@
       this.slackToken = slackToken;
       this.showUnreadMentions = showUnreadMentions;
       this.showUnreadMessages = showUnreadMessages;
+      this.luxaforClient = luxaforClient;
     }
 
     public event Action LuxaforFailure;
 
     public void Initialize()
     {
-      this.luxaforClient = this.InitializeLuxaforClient();
+      this.InitializeLuxaforClient();
       this.slackAgent = this.InitializeSlackAgent(this.slackToken);
 
       this.slackAgent.Changed += this.OnSlackChanged;
@@ -49,19 +52,14 @@
       this.luxaforClient?.Dispose();
     }
 
-    private LuxaforClient InitializeLuxaforClient()
+    private void InitializeLuxaforClient()
     {
-      var client = new LuxaforClient();
-      if (client.Initialize() == false)
+      if (this.luxaforClient.Initialize() == false)
       {
         throw new Exception("Luxafor device initialization failed");
       }
       
-      if (client.Test())
-      {
-        return client;
-      }
-      else
+      if (this.luxaforClient.Test() == false)
       {
         throw  new Exception("Luxafor communication issue. Please unplug/replug the Luxafor and restart the application");
       }
@@ -119,11 +117,11 @@
       bool result;
       if (this.showUnreadMentions && this.slackAgent.HasUnreadMentions)
       {
-        result = this.luxaforClient.Set(LuxaforClient.Colors.Red);
+        result = this.luxaforClient.Set(Colors.Red);
       }
       else if (this.showUnreadMessages && this.slackAgent.HasUnreadMessages)
       {
-        result = this.luxaforClient.Set(LuxaforClient.Colors.Blue);
+        result = this.luxaforClient.Set(Colors.Blue);
       }
       else
       {

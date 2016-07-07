@@ -1,0 +1,28 @@
+{
+  "copyright": "Copyright ©  2016",
+  "title": "Luxa4Slack",
+  "authors": [ "Gregoire Pailler" ],
+  "version": "1.1.0-*",
+
+  "buildOptions": {
+    "compile": {
+      "include": [
+        "**/*.cs",
+        "../OAuthInfo.cs"
+      ]
+    }
+  },
+
+  "dependencies": {
+    "Castle.Core": "4.0.0-alpha001",
+    "NLog": "4.4.0-beta13",
+    "SlackAPI": { "target": "project" }
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50",
+      "dependencies": { "NETStandard.Library": "1.6.0" }
+    },
+    "net45": {}
+  }}

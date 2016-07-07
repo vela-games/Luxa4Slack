@@ -4,6 +4,7 @@
   using System.Threading.Tasks;
   using System.Windows;
 
+  using CG.Luxa4Slack.Luxafor.Client;
   using CG.Luxa4Slack.Tray.Properties;
 
   using Hardcodet.Wpf.TaskbarNotification;
@@ -66,7 +67,7 @@
       }
       else
       {
-        this.luxa4Slack = new Luxa4Slack(this.token, this.showUnreadMentions, this.showUnreadMessages);
+        this.luxa4Slack = new Luxa4Slack(this.token, this.showUnreadMentions, this.showUnreadMessages, new LuxaforClient());
         try
         {
           this.luxa4Slack.Initialize();

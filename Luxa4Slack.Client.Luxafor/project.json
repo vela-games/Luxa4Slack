@@ -1,0 +1,16 @@
+﻿{
+  "copyright": "Copyright ©  2016",
+  "title": "Luxa4Slack",
+  "authors": [ "Gregoire Pailler" ],
+  "version": "1.1.0",
+
+  "dependencies": {
+    "LuxaforSharp": "2.0.0",
+    "Luxa4Slack": { "target": "project" },
+    "NLog": "4.4.0-beta13"
+  },
+
+  "frameworks": {
+    "net4.5": {}
+  }
+}

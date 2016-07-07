@@ -1,28 +1,21 @@
-﻿namespace CG.Luxa4Slack
+﻿namespace CG.Luxa4Slack.Luxafor.Client
 {
   using System;
   using System.Collections.Generic;
-  using System.Linq;
   using System.Threading;
 
   using LuxaforSharp;
 
   using NLog;
+  using System.Linq;
 
-  internal class LuxaforClient : IDisposable
+  using CG.Luxa4Slack.Client;
+
+  public class LuxaforClient : ILuxaforClient
   {
     private const int Timeout = 200;
 
     private readonly ILogger logger = LogManager.GetLogger("Luxafor");
-
-    public enum Colors
-    {
-      None,
-      White,
-      Red,
-      Green,
-      Blue
-    }
 
     private readonly Dictionary<Colors, Color> colorsMapping = new Dictionary<Colors, Color>
                                                         {

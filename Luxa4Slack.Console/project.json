@@ -1,0 +1,39 @@
+{
+  "copyright": "Copyright ©  2016",
+  "title": "Luxa4Slack",
+  "authors": [ "Gregoire Pailler" ],
+  "version": "1.1.0-*",
+
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "copyToOutput": [
+      "nlog.config"
+    ]
+  },
+
+  "dependencies": {
+    "NLog": "4.4.0-beta13",
+    "Luxa4Slack": { "target": "project" },
+    "Mono.Options": "4.4.0",
+    "Luxa4Slack.Client.CommandLine": { "target": "project" }
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50",
+      "buildOptions": { "define": [ "NETSTANDARD1_6" ] },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.0",
+          "type": "platform"
+        }
+      }
+    },
+    "net461": {
+      "dependencies": {
+        "Luxa4Slack.Client.Luxafor": { "target": "project" } 
+      }
+    }
+  }
+}
+

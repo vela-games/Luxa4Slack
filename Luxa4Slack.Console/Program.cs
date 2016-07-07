@@ -1,71 +1,109 @@
 ﻿namespace CG.Luxa4Slack.Console
 {
   using System;
-
-  using CommandLine;
+  using System.Collections.Generic;
+  using System.IO;
+  using System.Linq;
+  using System.Reflection;
 
   using NLog;
+
+  using CG.Luxa4Slack.Client;
 
   public class Program
   {
     private static readonly ILogger logger = LogManager.GetLogger("Luxa4Slack.Console");
     private static Luxa4Slack luxa4Slack;
-    private static CommandLineOptions commandLineOptions;
 
     public static void Main(string[] args)
     {
-      commandLineOptions = ParseCommandLine(args);
-      if (commandLineOptions != null)
+      logger.Info("Start");
+
+      var clientTypes = DiscoverAvailableClientTypes();
+
+      CommandLineOptions options = ParseCommandLine(args, clientTypes.Select(x => x.Name));
+      if (options.HasError)
       {
-        if (commandLineOptions.RequestToken)
-        {
-          logger.Warn("Please visit following uri to retrieve your Slack token");
-          logger.Warn(OAuthHelper.GetAuthorizationUri());
-        }
-        else
-        {
-          luxa4Slack = new Luxa4Slack(
-            commandLineOptions.Token,
-            commandLineOptions.ShowUnreadMentions,
-            commandLineOptions.ShowUnreadMessages);
+        Console.ReadLine();
+        return;
+      }
 
-          try
-          {
-            luxa4Slack.Initialize();
-            luxa4Slack.LuxaforFailure += OnLuxaforFailure;
+      if (options.Debug)
+      {
+        EnableDebugLog();
+      }
 
-            Console.ReadLine();
-          }
-          catch (Exception ex)
-          {
-            logger.Error(ex);
-          }
-          finally
-          {
-            luxa4Slack.Dispose();
-          }
-        }
+      if (options.RequestToken)
+      {
+        logger.Warn("Please visit following uri to retrieve your Slack token");
+        logger.Warn(OAuthHelper.GetAuthorizationUri());
+        return;
+      }
+
+      Type selectedClientType = clientTypes.FirstOrDefault(x => x.Name == options.Client);
+      if (selectedClientType == null)
+      {
+        logger.Error("Client '{0}' not found. Fallback to {1}", options.Client, typeof(DebugClient).Name);
+        selectedClientType = typeof(DebugClient);
+      }
+
+      luxa4Slack = new Luxa4Slack(
+        options.Token,
+        options.ShowUnreadMessages,
+        options.ShowUnreadMentions,
+        (ILuxaforClient)Activator.CreateInstance(selectedClientType));
+
+      try
+      {
+        luxa4Slack.Initialize();
+        luxa4Slack.LuxaforFailure += OnLuxaforFailure;
+
+        Console.ReadLine();
+      }
+      catch (Exception ex)
+      {
+        logger.Error(ex);
+      }
+      finally
+      {
+        luxa4Slack.Dispose();
       }
     }
 
-    private static CommandLineOptions ParseCommandLine(string[] args)
+    private static IEnumerable<Type> DiscoverAvailableClientTypes()
     {
-      var parser = Parser.Default.ParseArguments<CommandLineOptions>(args);
-      var result = parser.MapResult(ParseCommandLineResults, x => null);
+      var assembliesName =
+        Directory.GetFiles(
+          Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+          "*.dll",
+          SearchOption.TopDirectoryOnly).Select(x => new AssemblyName(Path.GetFileNameWithoutExtension(x)));
 
-      return result;
+      var types =
+        assembliesName.SelectMany(
+          x => Assembly.Load(x).GetExportedTypes().Where(y => y.GetInterfaces().Any(z => z == typeof(ILuxaforClient))));
+
+      var duplicates = types.GroupBy(x => x.Name).Where(x => x.Count() > 1).SelectMany(x => x);
+      if (duplicates.Any())
+      {
+        throw new Exception($"Client types must have different names ({string.Join(", ", duplicates)})");
+      }
+
+      return types;
     }
 
-    private static CommandLineOptions ParseCommandLineResults(CommandLineOptions options)
+    private static CommandLineOptions ParseCommandLine(string[] arguments, IEnumerable<string> clientTypes)
     {
-      if (options.Debug)
+      CommandLineOptions options = new CommandLineOptions(arguments, clientTypes);
+      if (options.HasError)
       {
-        foreach (var rule in LogManager.Configuration.LoggingRules)
+        var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName();
+        logger.Info("{0} - {1}{2}", assemblyName.Name, assemblyName.Version, Environment.NewLine);
+        if (string.IsNullOrEmpty(options.ErrorMessage) == false)
         {
-          rule.EnableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
+          logger.Error("Error: {0}{1}", options.ErrorMessage, Environment.NewLine);
         }
 
-        LogManager.ReconfigExistingLoggers();
+        logger.Info("Options: {0}{1}", Environment.NewLine, options.Help);
       }
 
       return options;
@@ -74,6 +112,16 @@
     private static void OnLuxaforFailure()
     {
       logger.Error("Luxafor communication issue. Please unplug/replug the Luxafor and restart the application");
+    }
+
+    private static void EnableDebugLog()
+    {
+      foreach (var rule in LogManager.Configuration.LoggingRules)
+      {
+        rule.EnableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
+      }
+
+      LogManager.ReconfigExistingLoggers();
     }
   }
 }
